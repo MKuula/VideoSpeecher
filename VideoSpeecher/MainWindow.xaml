@@ -1,0 +1,117 @@
+﻿<Window x:Class="VideoSpeecher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:s="clr-namespace:VideoSpeecher"
+        Title="{Binding ApplicationTitle}" Height="350" Width="525" SizeToContent="Height" ResizeMode="CanMinimize" Topmost="True"
+        Closed="Window_Closed" Activated="Window_Activated" Deactivated="Window_Deactivated" LocationChanged="Window_LocationChanged">
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo>
+            <TaskbarItemInfo.ThumbButtonInfos>
+                <ThumbButtonInfoCollection>
+                    <ThumbButtonInfo Description="Aloita / Jatka" Command="{Binding ControlCommand}" CommandParameter="Start">
+                        <ThumbButtonInfo.ImageSource>
+                            <DrawingImage>
+                                <DrawingImage.Drawing>
+                                    <GeometryDrawing Brush="{Binding AreControlsEnabled, Converter={StaticResource BooleanToColorConverter}}">
+                                        <GeometryDrawing.Pen>
+                                            <Pen Brush="DimGray" />
+                                        </GeometryDrawing.Pen>
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry>
+                                                <PathFigure>
+                                                    <PolyLineSegment Points="0,0 10,5 0,10" />
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingImage.Drawing>
+                            </DrawingImage>
+                        </ThumbButtonInfo.ImageSource>
+                    </ThumbButtonInfo>
+                    <ThumbButtonInfo Description="Pysäytä" Command="{Binding ControlCommand}" CommandParameter="Pause">
+                        <ThumbButtonInfo.ImageSource>
+                            <DrawingImage>
+                                <DrawingImage.Drawing>
+                                    <GeometryDrawing Brush="{Binding AreControlsEnabled, Converter={StaticResource BooleanToColorConverter}}">
+                                        <GeometryDrawing.Pen>
+                                            <Pen Brush="DimGray" />
+                                        </GeometryDrawing.Pen>
+                                        <GeometryDrawing.Geometry>
+                                            <GeometryGroup>
+                                                <RectangleGeometry Rect="0,0,3,10" />
+                                                <RectangleGeometry Rect="6,0,3,10" />
+                                            </GeometryGroup>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingImage.Drawing>
+                            </DrawingImage>
+                        </ThumbButtonInfo.ImageSource>
+                    </ThumbButtonInfo>
+                </ThumbButtonInfoCollection>
+            </TaskbarItemInfo.ThumbButtonInfos>
+        </TaskbarItemInfo>
+    </Window.TaskbarItemInfo>
+    <StackPanel>
+        <StackPanel Margin="10" x:Name="ControlPanel">
+            <Label>Äänitiedoston nimi</Label>
+            <TextBox Text="{Binding AudioFilename}" MouseDoubleClick="TextBox_MouseDoubleClick" />
+            <Label>Tekstitystiedoston nimi</Label>
+            <TextBox Text="{Binding SubtitleFilename}" MouseDoubleClick="TextBox_MouseDoubleClick_1" />
+            <StackPanel Orientation="Horizontal">
+                <Button Padding="5" Command="{Binding ControlCommand}" CommandParameter="Start" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <Grid VerticalAlignment="Center">
+                            <Polyline Fill="Gray" Opacity="0.5" Points="-2,-3 8,2 -2,7" />
+                            <Polyline Stroke="{Binding AreControlsEnabled, Converter={StaticResource BooleanToColorConverter}, ConverterParameter=true}" Fill="{Binding AreControlsEnabled, Converter={StaticResource BooleanToColorConverter}, ConverterParameter=true}" Points="0,0 10,5 0,10" />
+                        </Grid>
+                        <Label>Aloita / Jatka</Label>
+                    </StackPanel>
+                </Button>
+                <Button Padding="5" Command="{Binding ControlCommand}" CommandParameter="Pause" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <Grid VerticalAlignment="Center">
+                            <Line Stroke="Gray" Opacity="0.5" StrokeThickness="2" X1="-1" X2="-1" Y1="-2" Y2="8" />
+                            <Line Stroke="{Binding AreControlsEnabled, Converter={StaticResource BooleanToColorConverter}, ConverterParameter=true}" StrokeThickness="2" X1="0" X2="0" Y2="10" />
+                            <Line Stroke="Gray" Opacity="0.5" StrokeThickness="2" X1="6" X2="6" Y1="-2" Y2="8" />
+                            <Line Stroke="{Binding AreControlsEnabled, Converter={StaticResource BooleanToColorConverter}, ConverterParameter=true}" StrokeThickness="2" X1="7" X2="7" Y2="10" />
+                        </Grid>
+                        <Label>Pysäytä</Label>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <Label>Sijainti</Label>
+            <Slider Maximum="{Binding MaximumLength}" Minimum="0" Value="{Binding Position}" ValueChanged="Slider_ValueChanged"></Slider>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding Position, Converter={StaticResource TickToTimeConverter}}" />
+                <Label>/</Label>
+                <Label Content="{Binding MaximumLength, Converter={StaticResource TickToTimeConverter}}" />
+            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <Label>Valittu puhuja</Label>
+                    <ComboBox ItemsSource="{Binding Speakers}" SelectedItem="{Binding SelectedSpeaker}" SelectedIndex="{Binding SelectedSpeakerIndex}"></ComboBox>
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <Label>Äänenvoimakkuus</Label>
+                    <Slider TickFrequency="10" TickPlacement="Both" IsSnapToTickEnabled="True" Maximum="100" Value="{Binding SelectedVolume}" />
+                </StackPanel>
+                <StackPanel Grid.Column="4">
+                    <Label>Nopeus</Label>
+                    <CheckBox IsChecked="{Binding IsSlowed}">Hidastettu</CheckBox>
+                </StackPanel>
+            </Grid>
+            <Separator Margin="0,10" />
+        </StackPanel>
+        <StackPanel Name="SubtitlePanel">
+            <TextBlock Margin="5" FontSize="12" Text="{Binding PreviousSubtitle}" />
+            <TextBlock Margin="5" FontSize="14" Text="{Binding CurrentSubtitle}" />
+        </StackPanel>
+    </StackPanel>
+</Window>
