@@ -28,4 +28,4 @@ This version has some known limitations and things to be implemented, like
 - localized version
 
 > [!NOTE]
-> Current version here is written in Finnish. The English version can be downloaded separately as the file [vspeecher_en.exe](http://ftp.msoftwares.net/vspeecher_en.exe) or you can tweak the MainWindow.xaml by yourself.
+> Current version here is written in Finnish. The English version can be downloaded separately as the file [vspeecher_en.exe](ftp://ftp.msoftwares.net/vspeecher_en.exe) or you can tweak the MainWindow.xaml by yourself.
